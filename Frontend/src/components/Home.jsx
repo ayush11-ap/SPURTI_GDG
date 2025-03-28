@@ -31,7 +31,7 @@ const Home = () => {
       <SubmitChallenge />
       <BecomeContributor />
       <Footer />
-      <VerifyProblem />
+      {/* <VerifyProblem /> */}
     </div>
   );
 };

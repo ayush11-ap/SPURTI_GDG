@@ -5,7 +5,7 @@ const StoriesOfImpact = () => (
     <div className="flex flex-col md:flex-row gap-8">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full md:w-1/3">
         <img
-          src="./public/story1.png"
+          src="https://res.cloudinary.com/dfl3qkx31/image/upload/v1743072089/gnon1srxjnexnua9mpzj.jpg"
           alt="Smiling child"
           className="rounded-lg mb-8"
         />
@@ -23,7 +23,7 @@ const StoriesOfImpact = () => (
 
       <div className="bg-white rounded-lg shadow-lg p-8 w-full md:w-1/3">
         <img
-          src="./public/story1.png"
+          src="https://res.cloudinary.com/dfl3qkx31/image/upload/v1743072089/gnon1srxjnexnua9mpzj.jpg"
           alt="Smiling child"
           className="rounded-lg mb-8"
         />
@@ -41,7 +41,7 @@ const StoriesOfImpact = () => (
 
       <div className="bg-white rounded-lg shadow-lg p-8 w-full md:w-1/3">
         <img
-          src="./public/story1.png"
+          src="https://res.cloudinary.com/dfl3qkx31/image/upload/v1743072089/gnon1srxjnexnua9mpzj.jpg"
           alt="Smiling child"
           className="rounded-lg mb-8"
         />

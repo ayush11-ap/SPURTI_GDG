@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const AuthPage = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -198,37 +199,37 @@ const AuthPage = () => {
     // Prepare submission data
     const submissionData = {
       ...formData,
-      ...(formData.role === "NGO" && { ngoDetails: formData.ngoDetails }),
-      ...(formData.role === "Expert" && {
-        expertDetails: formData.expertDetails,
-      }),
-      ...(formData.role === "Donor" && { donorDetails: formData.donorDetails }),
-      ...(["volunteer", "Spurti Volunteer"].includes(formData.role) && {
-        volunteerDetails: formData.volunteerDetails,
-      }),
+      roleDetails: {
+        ...(formData.role === "NGO" && formData.ngoDetails),
+        ...(formData.role === "Expert" && formData.expertDetails),
+        ...(formData.role === "Donor" && formData.donorDetails),
+        ...(["volunteer", "Spurti Volunteer"].includes(formData.role) &&
+          formData.volunteerDetails),
+      },
     };
 
     try {
-      const endpoint = isLogin ? "/api/login" : "/api/signup";
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(submissionData),
+      const endpoint = isLogin
+        ? `${import.meta.env.VITE_API_URL}/user/login`
+        : `${import.meta.env.VITE_API_URL}/user/register`;
+
+      const response = await axios.post(endpoint, submissionData, {
+        withCredentials: true, // To include cookies
       });
 
-      const data = await response.json();
+      const data = response.data;
 
-      if (response.ok) {
+      if (response.status === 200) {
         localStorage.setItem("token", data.token);
-        window.location.href = "/dashboard";
+        window.location.href = "/";
       } else {
         alert(data.message || "Authentication failed");
       }
     } catch (error) {
       console.error("Authentication error:", error);
-      alert("An error occurred. Please try again.");
+      alert(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
     }
   };
 
@@ -337,7 +338,7 @@ const AuthPage = () => {
             <button
               type="button"
               onClick={() => setIsLogin(!isLogin)}
-              className="text-indigo-600 hover:text-indigo-500"
+              className="text-indigo-600 hover:text-indigo-500 cursor-pointer"
             >
               {isLogin
                 ? "Need an account? Sign Up"

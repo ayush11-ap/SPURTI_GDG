@@ -7,7 +7,11 @@ const Navbar = () => {
   return (
     <nav className="flex justify-between items-center p-3 bg-red-100">
       <div className="flex gap-1">
-        <img src="./logo.png" alt="Smiling child" className="w-5" />
+        <img
+          src="https://res.cloudinary.com/dfl3qkx31/image/upload/v1743072087/rpkukf52d2qhqkblfu8s.jpg"
+          alt="Smiling child"
+          className="w-5"
+        />
         <h1 className="text-xl font-Crimson Pro">स्फूर्ती</h1>
       </div>
       <div className="space-x-4">

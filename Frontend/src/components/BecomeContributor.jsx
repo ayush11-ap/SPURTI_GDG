@@ -9,7 +9,7 @@ const BecomeContributor = () => {
     <section className="p-10 flex flex-col md:flex-row items-center gap-44">
       <div className="flex justify-start md:w-2/5 mt-4 md:mt-0">
         <img
-          src="./public/helping.png"
+          src="https://res.cloudinary.com/dfl3qkx31/image/upload/v1743072088/rdufphjtdocctcfrwyba.jpg"
           alt="Smiling child"
           className="rounded-lg"
         />

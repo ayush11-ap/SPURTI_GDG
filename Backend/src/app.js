@@ -9,8 +9,13 @@ const userRouter = require("./routes/user.routes");
 const problemRouter = require("./routes/problem.routes");
 const verifyRouter = require("./routes/verify.routes");
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 require("dotenv").config();
-app.use(cors());
 
 //Middleware
 app.use(express.json());

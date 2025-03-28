@@ -4,8 +4,8 @@ const PlatformInfo = () => (
   <section className="p-10 flex flex-col md:flex-row items-center gap-44">
     <div className="flex justify-end md:w-2/5 mt-4 md:mt-0">
       <img
-        src="./public/intro.png"
-        alt="Smiling child"
+        src="https://res.cloudinary.com/dfl3qkx31/image/upload/v1743072093/uwz0v7cnbok1mvy4ubkv.jpg"
+        alt="Group Image"
         className="rounded-lg"
       />
     </div>

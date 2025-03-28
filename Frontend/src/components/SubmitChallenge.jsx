@@ -27,7 +27,7 @@ const SubmitChallenge = () => {
       </div>
       <div className="flex justify-end md:w-2/5 mt-4 md:mt-0">
         <img
-          src="./public/Challenge.png"
+          src="https://res.cloudinary.com/dfl3qkx31/image/upload/v1743072093/s8cjinejykdgnuadvcem.jpg"
           alt="Smiling child"
           className="rounded-lg"
         />

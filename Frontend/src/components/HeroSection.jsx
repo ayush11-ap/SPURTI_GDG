@@ -32,7 +32,11 @@ const HeroSection = () => {
         </div>
       </div>
       <div className="flex justify-end md:w-2/5 mt-4 md:mt-0">
-        <img src="/girlsmile.png" alt="Smiling child" className="rounded-lg" />
+        <img
+          src="https://res.cloudinary.com/dfl3qkx31/image/upload/v1743072089/rgmidxvt97rdqrhe7dwt.jpg"
+          alt="Smiling child"
+          className="rounded-lg"
+        />
       </div>
     </section>
   );
