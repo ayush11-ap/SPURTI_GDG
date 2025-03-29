@@ -7,6 +7,7 @@ import SubmitChallenge from "./SubmitChallenge";
 import BecomeContributor from "./BecomeContributor";
 import Footer from "./Footer";
 import VerifyProblem from "./VerifyProblem";
+import Stories from "./Stories";
 const Home = () => {
   const location = useLocation();
 
@@ -26,7 +27,8 @@ const Home = () => {
       <PlatformInfo />
       {/* Add an id to the StoriesOfImpact component */}
       <div id="StoriesOfImpact">
-        <StoriesOfImpact />
+        {/* <StoriesOfImpact /> */}
+        <Stories />
       </div>
       <SubmitChallenge />
       <BecomeContributor />

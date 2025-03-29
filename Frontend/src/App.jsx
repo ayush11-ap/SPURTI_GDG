@@ -1,11 +1,13 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import AuthPage from "./components/AuthPage";
 import ProblemSubmissionForm from "./components/ProblemSubmissionForm";
 import VerifyProblem from "./components/VerifyProblem";
 import ProblemPostsPage from "./components/ProblemPostsPage";
+import Login from "./Auth/Login";
+import SignUp from "./Auth/SignUp";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
@@ -16,7 +18,8 @@ const App = () => {
       </div>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/submit-problem" element={<ProblemSubmissionForm />} />
         <Route path="/verify-problem" element={<VerifyProblem />} />
         <Route path="/problem-posts" element={<ProblemPostsPage />} />

@@ -1,8 +1,8 @@
 @import "tailwindcss";
-/* filepath: c:\Users\Ram\Desktop\Spurti\Frontend\src\index.css */
-@tailwind utilities;
-
-/* Custom styles */
-body {
-  background-color: #f7f7f7;
+@plugin "daisyui" {
+  themes:
+    caramellatte --default,
+    luxury --prefersdark,
+    cupcake,
+    dracula;
 }
