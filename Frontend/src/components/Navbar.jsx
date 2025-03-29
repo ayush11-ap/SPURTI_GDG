@@ -19,8 +19,11 @@ const Navbar = () => {
         <div className="flex gap-2">
           <div className="flex items-center justify-center gap-4 mr-2 cursor-pointer text-xl">
             <h1 onClick={() => navigate("/")}>Home</h1>
-            <a href="#stories">Stories</a>
-            <h1>Submit Challenge</h1>
+            {/* <a href="#stories">Stories</a> */}
+            <h1 onClick={() => navigate("/submit-problem")}>
+              Submit Challenge
+            </h1>
+            <h1>Challenges</h1>
             <h1>Contribute</h1>
           </div>
           {/* Authentication UI */}
