@@ -22,12 +22,12 @@ const ProblemSchema = new mongoose.Schema(
     category: {
       type: String,
       enum: [
-        "education",
-        "healthcare",
-        "infrastructure",
-        "environment",
-        "technology",
-        "others",
+        "Education",
+        "Healthcare",
+        "Infrastructure",
+        "Environment",
+        "Technology",
+        "Others",
       ],
       required: true,
     },

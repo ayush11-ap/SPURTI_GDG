@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import axios from "axios";
 
 const ProblemSubmissionForm = () => {
   const [title, setTitle] = useState("");
@@ -39,6 +40,46 @@ const ProblemSubmissionForm = () => {
     eval(`set${type.charAt(0).toUpperCase() + type.slice(1)}`)((prev) =>
       prev.filter((_, i) => i !== index)
     );
+  };
+
+  const handleProblemSubmit = async () => {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("address", address);
+
+    images.forEach((image) => formData.append("images", image));
+    videos.forEach((video) => formData.append("videos", video));
+    documents.forEach((document) => formData.append("documents", document));
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/problem/submit`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 201) {
+        alert("Problem submitted successfully!");
+        // Reset form fields
+        setTitle("");
+        setDescription("");
+        setCategory("");
+        setAddress("");
+        setImages([]);
+        setVideos([]);
+        setDocuments([]);
+        setErrors({});
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
+    }
   };
 
   return (
@@ -145,7 +186,12 @@ const ProblemSubmissionForm = () => {
 
         {/* Submit Button */}
         <div className="mt-4">
-          <button className="btn btn-success w-full">Submit Problem</button>
+          <button
+            onClick={handleProblemSubmit}
+            className="btn btn-success w-full"
+          >
+            Submit Problem
+          </button>
         </div>
       </fieldset>
     </div>

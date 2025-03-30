@@ -7,6 +7,7 @@ import ProblemPostsPage from "./components/ProblemPostsPage";
 import Login from "./Auth/Login";
 import SignUp from "./Auth/SignUp";
 import Navbar from "./components/Navbar";
+import Profile from "./components/Profile";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/submit-problem" element={<ProblemSubmissionForm />} />
         <Route path="/verify-problem" element={<VerifyProblem />} />
         <Route path="/problem-posts" element={<ProblemPostsPage />} />

@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Add axios import
+import { UserDataContext } from "../context/UserContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const [userLogin, setUserLogin] = useState(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUser({}); // Simulate user object when logged in
-    }
-  }, []);
+  const { user } = useContext(UserDataContext);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     setUserLogin({}); // Simulate userLogin object when logged in
+  //   }
+  // }, []);
+  console.log(user?.name);
 
   const handleLogout = async () => {
     try {
@@ -20,7 +23,7 @@ const Navbar = () => {
       );
       if (response.status === 200) {
         localStorage.removeItem("token"); // Clear token from localStorage
-        setUser(null); // Reset user state
+        setUserLogin(null); // Reset user state
         navigate("/login"); // Redirect to login page
       }
     } catch (error) {
@@ -46,7 +49,9 @@ const Navbar = () => {
             <h1 onClick={() => navigate("/submit-problem")}>
               Submit Challenge
             </h1>
-            <h1 onClick={() => navigate("/problem-posts")}>Challenges</h1>
+            {user?.role === "Spurti Volunteer" && (
+              <h1 onClick={() => navigate("/verify-problem")}>Verify</h1>
+            )}
             <h1 onClick={() => navigate("/problem-posts")}>Contribute</h1>
           </div>
           {/* Authentication UI */}
@@ -71,15 +76,13 @@ const Navbar = () => {
                 tabIndex={0}
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
               >
-                <li>
+                <li onClick={() => navigate("/profile")}>
                   <a className="justify-between">
                     Profile
                     <span className="badge">New</span>
                   </a>
                 </li>
-                <li>
-                  <a>Settings</a>
-                </li>
+
                 <li onClick={handleLogout}>
                   <a>Logout</a>
                 </li>

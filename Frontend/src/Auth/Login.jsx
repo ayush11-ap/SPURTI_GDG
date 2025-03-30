@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { UserDataContext } from "../context/UserContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { user, setUser } = useContext(UserDataContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -15,16 +17,23 @@ const Login = () => {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/user/login`,
         {
-          email,
-          password,
+          email: email,
+          password: password,
         }
       );
 
       if (response.status === 200) {
-        const data = response.data;
+        console.log(response.data);
+
+        const data = response.data.data;
+        setUser(data.data);
+        // console.log(data.data);
+
         localStorage.setItem("token", data.token);
         navigate("/");
       }
+      setEmail("");
+      setPassword("");
     } catch (error) {
       console.error("Error logging in:", error);
     }

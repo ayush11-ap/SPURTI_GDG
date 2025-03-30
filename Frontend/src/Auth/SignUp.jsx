@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { handleSubmit, renderRoleSpecificFields } from "../utils/data";
+import { renderRoleSpecificFields } from "../utils/data";
+import { UserDataContext } from "../context/UserContext";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -19,7 +20,51 @@ const SignUp = () => {
   const [skills, setSkills] = useState("");
   const [preferredArea, setPreferredArea] = useState("");
 
+  const { user, setUser } = useContext(UserDataContext);
   const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const submissionData = {
+      name: name,
+      mobileNo: mobileNo,
+      email: email,
+      password: password,
+      address: address,
+      role: role,
+      roleDetails: {
+        ...(role === "NGO" && {
+          organizationName: organizationName,
+          registrationNumber: registrationNumber,
+          focusArea: focusArea,
+        }),
+        ...(role === "Expert" && { expertise: expertise }),
+        ...(role === "Donor" && { donationPreference: donationPreference }),
+        ...(["volunteer", "Spurti Volunteer"].includes(role) && {
+          skills: skills,
+          preferredArea: preferredArea,
+        }),
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/user/register`,
+        submissionData,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        const data = response.data.data;
+        setUser(data);
+        localStorage.setItem("token", response.data.token);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-zinc-800 py-12 px-4 sm:px-6 lg:px-8">
@@ -94,28 +139,7 @@ const SignUp = () => {
           placeholder="Password"
         />
 
-        <button
-          onClick={(e) =>
-            handleSubmit(
-              e,
-              name,
-              mobileNo,
-              email,
-              password,
-              address,
-              role,
-              organizationName,
-              registrationNumber,
-              focusArea,
-              expertise,
-              donationPreference,
-              skills,
-              preferredArea,
-              navigate
-            )
-          }
-          className="btn btn-neutral mt-4"
-        >
+        <button onClick={handleSubmit} className="btn btn-neutral mt-4">
           Sign Up
         </button>
         <p className="my-2 text-center text-lg text-gray-600 font-semibold">
