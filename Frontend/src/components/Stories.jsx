@@ -30,7 +30,7 @@ const Stories = () => {
             </div>
           </div>
 
-          <div className="divider divider-horizontal divider-neutral"></div>
+          <div className="divider divider-horizontal divider-neutral">I</div>
 
           <div className="card bg-white w-96 shadow-sm">
             <figure className="px-5 pt-5">
@@ -53,7 +53,7 @@ const Stories = () => {
               </p>
             </div>
           </div>
-          <div className="divider divider-horizontal divider-neutral"></div>
+          <div className="divider divider-horizontal divider-neutral">I</div>
 
           <div className="card bg-white w-96 shadow-sm">
             <figure className="px-5 pt-5">

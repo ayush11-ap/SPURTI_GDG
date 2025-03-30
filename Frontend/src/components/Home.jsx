@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import HeroSection from "./HeroSection";
 import PlatformInfo from "./PlatformInfo";
-import StoriesOfImpact from "./StoriesOfImpact";
 import SubmitChallenge from "./SubmitChallenge";
 import BecomeContributor from "./BecomeContributor";
 import Footer from "./Footer";
@@ -25,9 +24,7 @@ const Home = () => {
     <div className="bg-red-50 text-black">
       <HeroSection />
       <PlatformInfo />
-      {/* Add an id to the StoriesOfImpact component */}
       <div id="StoriesOfImpact">
-        {/* <StoriesOfImpact /> */}
         <Stories />
       </div>
       <SubmitChallenge />

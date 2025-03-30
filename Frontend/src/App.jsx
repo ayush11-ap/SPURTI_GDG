@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
-import AuthPage from "./components/AuthPage";
 import ProblemSubmissionForm from "./components/ProblemSubmissionForm";
 import VerifyProblem from "./components/VerifyProblem";
 import ProblemPostsPage from "./components/ProblemPostsPage";

@@ -27,7 +27,13 @@ const SignUp = () => {
         <legend className="fieldset-legend text-lg">SignUp to Spurti</legend>
 
         <label className="fieldset-label">Name</label>
-        <input type="text" className="input w-full" placeholder="Enter Name" />
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="input w-full"
+          placeholder="Enter Name"
+        />
 
         <label className="fieldset-label">Mobile No.</label>
         <input
@@ -48,7 +54,12 @@ const SignUp = () => {
         />
 
         <legend className="fieldset-legend">Address</legend>
-        <textarea className="textarea h-24 w-full" placeholder="Bio"></textarea>
+        <textarea
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          className="textarea h-24 w-full"
+          placeholder="Bio"
+        ></textarea>
 
         <legend className="fieldset-legend">Roles</legend>
         <select

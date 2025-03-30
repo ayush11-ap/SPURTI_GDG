@@ -22,7 +22,19 @@ module.exports.registerUser = async (req, res) => {
       roleDetails,
     });
     await user.save();
-    res.send("User Created Successfully");
+
+    // Generate JWT token
+    const token = await user.generateJWT();
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 8 * 3600000), // Expires in 8 hours
+    });
+
+    res.json({
+      message: "User Created Successfully",
+      data: user,
+      token,
+    });
   } catch (error) {
     res.status(400).send("Error While Saving the user : " + error.message);
   }
@@ -44,7 +56,7 @@ module.exports.loginUser = async (req, res) => {
       const token = await user.generateJWT();
 
       res.cookie("token", token, {
-        expires: new Date(Date.now() + 8 * 3600000),
+        expires: new Date(Date.now() + 8 * 3600000), // Expires in 8 hours
       });
       res.json({
         message: "User Logged In Successfully!",

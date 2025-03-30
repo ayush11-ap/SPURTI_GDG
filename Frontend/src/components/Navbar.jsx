@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Add axios import
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const user = null; // Replace this with your actual authentication logic
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUser({}); // Simulate user object when logged in
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/user/logout`
+      );
+      if (response.status === 200) {
+        localStorage.removeItem("token"); // Clear token from localStorage
+        setUser(null); // Reset user state
+        navigate("/login"); // Redirect to login page
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   return (
     <>
@@ -23,8 +46,8 @@ const Navbar = () => {
             <h1 onClick={() => navigate("/submit-problem")}>
               Submit Challenge
             </h1>
-            <h1>Challenges</h1>
-            <h1>Contribute</h1>
+            <h1 onClick={() => navigate("/problem-posts")}>Challenges</h1>
+            <h1 onClick={() => navigate("/problem-posts")}>Contribute</h1>
           </div>
           {/* Authentication UI */}
           {user ? (
@@ -39,7 +62,7 @@ const Navbar = () => {
                     alt="User Avatar"
                     src={
                       user.profilePicture ||
-                      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                      "https://cdn.vectorstock.com/i/1000v/51/87/student-avatar-user-profile-icon-vector-47025187.jpg"
                     }
                   />
                 </div>
@@ -57,7 +80,7 @@ const Navbar = () => {
                 <li>
                   <a>Settings</a>
                 </li>
-                <li>
+                <li onClick={handleLogout}>
                   <a>Logout</a>
                 </li>
               </ul>
