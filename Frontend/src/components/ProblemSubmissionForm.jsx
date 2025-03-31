@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addProblems } from "../utils/problemSlice";
 
 const ProblemSubmissionForm = () => {
   const [title, setTitle] = useState("");
@@ -10,6 +12,8 @@ const ProblemSubmissionForm = () => {
   const [videos, setVideos] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [errors, setErrors] = useState({});
+
+  const dispatch = useDispatch();
 
   const fileInputRefs = {
     images: useRef(null),
@@ -64,6 +68,8 @@ const ProblemSubmissionForm = () => {
       );
       if (response.status === 201) {
         alert("Problem submitted successfully!");
+        const data = response.data.data;
+        dispatch(addProblems(data));
         // Reset form fields
         setTitle("");
         setDescription("");

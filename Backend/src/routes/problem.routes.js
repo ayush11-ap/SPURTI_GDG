@@ -19,7 +19,7 @@ problemRouter.post(
   ]),
   registerProblem
 );
-problemRouter.get("/allProblems", userAuth, problemFeed);
+problemRouter.get("/verifiedProblems", userAuth, problemFeed);
 problemRouter.get("/aiAnalysis", userAuth, aiProblemAnalysis);
 
 module.exports = problemRouter;

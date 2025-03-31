@@ -61,6 +61,7 @@ module.exports.loginUser = async (req, res) => {
       res.json({
         message: "User Logged In Successfully!",
         data: user,
+        token,
       });
     } else {
       throw new Error("Invalid Password or Email");

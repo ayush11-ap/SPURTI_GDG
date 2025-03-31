@@ -1,119 +1,158 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { addProblems } from "../utils/problemSlice";
 
 const VerifyProblem = () => {
-  // Dummy problems with submitter details, address, and photos
-  const [problems, setProblems] = useState([
-    {
-      id: 1,
-      title: "Optimize Sorting Algorithm",
-      description:
-        "Improve the efficiency of a sorting algorithm for large datasets.",
-      submittedBy: "Alice Johnson",
-      profileIcon: "https://via.placeholder.com/40", // Placeholder profile icon
-      address: "123 Tech Street, Silicon Valley, CA, USA",
-      photos: ["https://via.placeholder.com/300"], // Dummy photo
-      isVerified: false,
-    },
-    {
-      id: 2,
-      title: "Build a Chatbot",
-      description:
-        "Create a chatbot that can answer frequently asked questions.",
-      submittedBy: "Bob Smith",
-      profileIcon: "https://via.placeholder.com/40", // Placeholder profile icon
-      address: "456 AI Avenue, New York, NY, USA",
-      photos: [], // No photos
-      isVerified: false,
-    },
-    {
-      id: 3,
-      title: "Develop a Weather App",
-      description:
-        "Build a weather application that provides real-time updates.",
-      submittedBy: "Charlie Brown",
-      profileIcon: "https://via.placeholder.com/40", // Placeholder profile icon
-      address: "789 Cloud Lane, Seattle, WA, USA",
-      photos: [
-        "https://via.placeholder.com/300",
-        "https://via.placeholder.com/300",
-      ], // Multiple dummy photos
-      isVerified: false,
-    },
-  ]);
+  const dispatch = useDispatch();
 
-  const handleVerify = (id) => {
-    setProblems((prevProblems) =>
-      prevProblems.map((problem) =>
-        problem.id === id ? { ...problem, isVerified: true } : problem
-      )
-    );
+  const [problems, setProblems] = useState([]);
+
+  const fetchProblems = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/verify/allProblems`,
+        {
+          withCredentials: true,
+        }
+      );
+      const fetchedProblems = response.data.problems;
+      console.log(fetchedProblems);
+
+      dispatch(addProblems(fetchedProblems));
+      setProblems(fetchedProblems);
+    } catch (error) {
+      console.error("Error fetching problems:", error);
+    }
+  };
+
+  const updateProblemStatus = async (id, status) => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_API_URL}/verify/updateStatus`,
+        { problemId: id, status },
+        { withCredentials: true }
+      );
+      console.log(response.data.message);
+
+      setProblems((prevProblems) =>
+        prevProblems.map((problem) =>
+          problem._id === id
+            ? {
+                ...problem,
+                verificationStatus: status,
+                verified: status === "approved",
+              }
+            : problem
+        )
+      );
+    } catch (error) {
+      console.error("Error updating problem status:", error);
+    }
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen p-6">
+    <div className="bg-base-200 min-h-screen p-6">
       <h1 className="text-3xl font-bold text-center mb-6">Verify Problems</h1>
+      <button onClick={fetchProblems} className="btn btn-dash btn-primary mb-4">
+        Fetch Problems
+      </button>
+
       <div className="space-y-6">
-        {problems.map((problem) => (
-          <div
-            key={problem.id}
-            className="bg-white shadow-md rounded-lg p-6 border border-gray-200"
-          >
-            {/* Submitter Info */}
-            <div className="flex items-center mb-4">
-              <img
-                src={problem.profileIcon}
-                alt={`${problem.submittedBy}'s profile`}
-                className="w-10 h-10 rounded-full mr-4"
-              />
-              <div>
-                <h3 className="text-lg font-medium text-gray-800">
-                  {problem.submittedBy}
-                </h3>
-                <p className="text-sm text-gray-500">Posted a challenge</p>
-              </div>
-            </div>
-
-            {/* Problem Details */}
-            <h2 className="text-xl font-semibold text-gray-800">
-              {problem.title}
-            </h2>
-            <p className="text-gray-600 mt-2">{problem.description}</p>
-
-            {/* Address */}
-            <p className="text-gray-500 mt-2">
-              <strong>Address:</strong> {problem.address}
-            </p>
-
-            {/* Photos */}
-            {problem.photos.length > 0 && (
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {problem.photos.map((photo, index) => (
-                  <img
-                    key={index}
-                    src={photo}
-                    alt={`Problem ${problem.id} photo ${index + 1}`}
-                    className="w-full h-auto rounded-lg shadow-md"
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Verify Button */}
-            <div className="flex items-center space-x-4 mt-4">
-              <button
-                onClick={() => handleVerify(problem.id)}
-                className={`px-4 py-2 rounded transition ${
-                  problem.isVerified
-                    ? "bg-gray-500 text-white cursor-not-allowed"
-                    : "bg-green-500 text-white hover:bg-green-600"
-                }`}
-                disabled={problem.isVerified}
+        {problems.length === 0 ? (
+          <p className="text-center text-gray-500">No problems found.</p>
+        ) : (
+          problems.map((problem) =>
+            problem.verified ? (
+              <div
+                key={problem._id}
+                className="bg-white p-4 rounded-xl shadow-md"
               >
-                {problem.isVerified ? "Verified" : "Verify"}
-              </button>
-            </div>
-          </div>
-        ))}
+                <h2 className="text-lg font-semibold">{problem.title}</h2>
+                <p className="text-sm text-gray-600">
+                  <strong>Status:</strong> {problem.verificationStatus}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Posted On:</strong>{" "}
+                  {new Date(problem.createdAt).toLocaleString()}
+                </p>
+              </div>
+            ) : (
+              <div
+                key={problem._id}
+                className="bg-white p-6 rounded-xl shadow-md"
+              >
+                <h2 className="text-xl font-semibold">
+                  Title: {problem.title}
+                </h2>
+                <p className="text-gray-700 mt-2">
+                  Description: {problem.description}
+                </p>
+
+                {/* Images */}
+                {problem.images.length > 0 && (
+                  <div className="flex space-x-4 mt-4">
+                    {problem.images.map((img, index) => (
+                      <img
+                        key={index}
+                        src={img}
+                        alt="Problem"
+                        className="w-32 h-32 object-cover rounded-lg"
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {/* Videos */}
+                {problem.videos.length > 0 && (
+                  <div className="mt-4">
+                    {problem.videos.map((video, index) => (
+                      <video
+                        key={index}
+                        controls
+                        className="w-64 h-36 rounded-lg"
+                      >
+                        <source src={video} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-4 text-sm text-gray-600">
+                  <p>
+                    <strong>Category:</strong> {problem.category}
+                  </p>
+                  <p>
+                    <strong>Address:</strong> {problem.address}
+                  </p>
+                  <p>
+                    <strong>Status:</strong> {problem.verificationStatus}
+                  </p>
+                  <p>
+                    <strong>Submitted By:</strong> {problem.submittedBy.name} (
+                    {problem.submittedBy.email})
+                  </p>
+                </div>
+
+                <div className="mt-4 space-x-2">
+                  <button
+                    onClick={() => updateProblemStatus(problem._id, "approved")}
+                    className="btn btn-success"
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => updateProblemStatus(problem._id, "rejected")}
+                    className="btn btn-error"
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div>
+            )
+          )
+        )}
       </div>
     </div>
   );
