@@ -8,24 +8,30 @@ import Login from "./Auth/Login";
 import SignUp from "./Auth/SignUp";
 import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
+import { Provider } from "react-redux";
+import appStore from "./utils/appStore";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      {/* Navbar is globally visible */}
-      <div className="sticky top-0 z-50">
-        <Navbar />
-      </div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/submit-problem" element={<ProblemSubmissionForm />} />
-        <Route path="/verify-problem" element={<VerifyProblem />} />
-        <Route path="/problem-posts" element={<ProblemPostsPage />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <Provider store={appStore}>
+        <BrowserRouter>
+          {/* Navbar is globally visible */}
+          <div className="sticky top-0 z-50">
+            <Navbar />
+          </div>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/submit-problem" element={<ProblemSubmissionForm />} />
+            <Route path="/verify-problem" element={<VerifyProblem />} />
+            <Route path="/problem-posts" element={<ProblemPostsPage />} />
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </>
   );
 };
 

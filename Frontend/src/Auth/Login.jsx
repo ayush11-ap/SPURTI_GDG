@@ -1,13 +1,15 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { UserDataContext } from "../context/UserContext";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
-  const { user, setUser } = useContext(UserDataContext);
+  // const { user, setUser } = useContext(UserDataContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -26,10 +28,8 @@ const Login = () => {
         console.log(response.data);
 
         const data = response.data.data;
-        setUser(data.data);
-        // console.log(data.data);
-
         localStorage.setItem("token", data.token);
+        dispatch(addUser(data));
         navigate("/");
       }
       setEmail("");

@@ -2,30 +2,24 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Add axios import
 import { UserDataContext } from "../context/UserContext";
+import { useDispatch, useSelector } from "react-redux";
+import { removeUser } from "../utils/userSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [userLogin, setUserLogin] = useState(null);
-
-  const { user } = useContext(UserDataContext);
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     setUserLogin({}); // Simulate userLogin object when logged in
-  //   }
-  // }, []);
-  console.log(user?.name);
+  const user = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  console.log(user);
 
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/logout`
+        `${import.meta.env.VITE_API_URL}/user/logout`,
+        {},
+        { withCredentials: true }
       );
-      if (response.status === 200) {
-        localStorage.removeItem("token"); // Clear token from localStorage
-        setUserLogin(null); // Reset user state
-        navigate("/login"); // Redirect to login page
-      }
+      dispatch(removeUser());
+      return navigate("/login");
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -66,7 +60,6 @@ const Navbar = () => {
                   <img
                     alt="User Avatar"
                     src={
-                      user.profilePicture ||
                       "https://cdn.vectorstock.com/i/1000v/51/87/student-avatar-user-profile-icon-vector-47025187.jpg"
                     }
                   />

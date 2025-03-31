@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { renderRoleSpecificFields } from "../utils/data";
 import { UserDataContext } from "../context/UserContext";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -20,8 +22,8 @@ const SignUp = () => {
   const [skills, setSkills] = useState("");
   const [preferredArea, setPreferredArea] = useState("");
 
-  const { user, setUser } = useContext(UserDataContext);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,8 +56,8 @@ const SignUp = () => {
       );
       if (response.status === 200) {
         const data = response.data.data;
-        setUser(data);
         localStorage.setItem("token", response.data.token);
+        dispatch(addUser(data));
         navigate("/");
       }
     } catch (error) {
