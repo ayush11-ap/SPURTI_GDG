@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { renderRoleSpecificFields } from "../utils/data";
-import { UserDataContext } from "../context/UserContext";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 
