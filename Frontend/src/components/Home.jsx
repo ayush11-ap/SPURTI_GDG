@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import HeroSection from "./HeroSection";
-import PlatformInfo from "./PlatformInfo";
-import SubmitChallenge from "./SubmitChallenge";
-import BecomeContributor from "./BecomeContributor";
-import Footer from "./Footer";
+import HeroSection from "../Pages/HeroSection";
+import PlatformInfo from "../Pages/PlatformInfo";
+import SubmitChallenge from "../Pages/SubmitChallenge";
+import BecomeContributor from "../Pages/BecomeContributor";
+import Footer from "../Pages/Footer";
 import VerifyProblem from "./VerifyProblem";
-import Stories from "./Stories";
+import Stories from "../Pages/Stories";
 const Home = () => {
   const location = useLocation();
 
