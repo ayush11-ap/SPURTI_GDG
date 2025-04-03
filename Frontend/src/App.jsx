@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { Suspense } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./components/Home";
 import ProblemSubmissionForm from "./components/ProblemSubmissionForm";
 import VerifyProblem from "./components/VerifyProblem";
@@ -27,7 +27,15 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/submit-problem" element={<ProblemSubmissionForm />} />
             <Route path="/verify-problem" element={<VerifyProblem />} />
-            <Route path="/problem-posts" element={<ProblemPostsPage />} />
+            <Route
+              path="/problem-posts"
+              element={
+                <Suspense>
+                  <ProblemPostsPage />
+                </Suspense>
+              }
+            />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </BrowserRouter>
       </Provider>

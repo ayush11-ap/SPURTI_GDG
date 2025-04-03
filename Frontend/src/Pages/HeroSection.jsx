@@ -17,7 +17,7 @@ const HeroSection = () => {
             volunteers collaborate to tackle real-world social challenges.
           </p>
           <button
-            onClick={() => navigate("/problem-posts")}
+            onClick={() => navigate("/submit-problem")}
             className="btn btn-outline mr-4"
           >
             Submit A Challange

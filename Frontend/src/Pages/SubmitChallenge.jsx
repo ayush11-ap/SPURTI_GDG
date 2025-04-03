@@ -17,7 +17,7 @@ const SubmitChallenge = () => {
             and more
           </p>
           <button
-            onClick={() => navigate("/problem-posts")}
+            onClick={() => navigate("/submit-problem")}
             className="btn btn-outline  btn-wide"
           >
             Submit a Challenge
