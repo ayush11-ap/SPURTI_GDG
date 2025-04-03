@@ -20,16 +20,32 @@ const ProblemPostsPage = () => {
         console.error("Error fetching problems:", error);
       }
     };
-
     fetchProblems();
   }, []);
 
-  // Toggle function to expand/collapse a problem
+  const handleUpvote = async (problemId) => {
+    try {
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/problem/upvote/${problemId}`,
+        {},
+        { withCredentials: true }
+      );
+
+      // Update the UI with the new votes
+      setVerifiedProblems((prevProblems) =>
+        prevProblems.map((p) =>
+          p._id === problemId ? { ...p, votes: response.data.votes } : p
+        )
+      );
+    } catch (error) {
+      console.error("Error upvoting:", error);
+    }
+  };
+
   const toggleProblem = (problemId) => {
     setExpandedProblemId((prevId) => (prevId === problemId ? null : problemId));
   };
 
-  // Filtered problems based on selected category
   const filteredProblems = selectedCategory
     ? verifiedProblems.filter(
         (problem) => problem.category === selectedCategory
@@ -38,7 +54,8 @@ const ProblemPostsPage = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen p-6">
-      <div className="sticky top-16 bg-gray-100 z-10 p-3 flex justify-between shadow-md">
+      {/* Header */}
+      <header className="sticky top-16 bg-gray-100 z-10 p-3 flex justify-between shadow-md">
         <h1 className="text-3xl font-bold">Challenges</h1>
         <button
           className="bg-black text-white px-4 py-2 rounded"
@@ -46,236 +63,183 @@ const ProblemPostsPage = () => {
         >
           Submit a Challenge
         </button>
-      </div>
+      </header>
 
-      {/* Category Filter (Using Only Input Fields) */}
-      <div className="flex items-center justify-center my-6">
-        <form className="filter">
+      {/* Category Filter */}
+      <section className="flex items-center justify-center my-6">
+        <form className="filter flex space-x-2">
+          {[
+            "Education",
+            "Healthcare",
+            "Infrastructure",
+            "Environment",
+            "Technology",
+            "Others",
+          ].map((category) => (
+            <input
+              key={category}
+              className="btn"
+              type="radio"
+              name="category"
+              aria-label={category}
+              onChange={() => setSelectedCategory(category)}
+            />
+          ))}
           <input
             className="btn btn-square"
             type="reset"
             value="×"
             onClick={() => setSelectedCategory("")}
           />
-
-          <input
-            className="btn"
-            type="radio"
-            name="category"
-            aria-label="Education"
-            onChange={() => setSelectedCategory("Education")}
-          />
-
-          <input
-            className="btn"
-            type="radio"
-            name="category"
-            aria-label="Healthcare"
-            onChange={() => setSelectedCategory("Healthcare")}
-          />
-
-          <input
-            className="btn"
-            type="radio"
-            name="category"
-            aria-label="Infrastructure"
-            onChange={() => setSelectedCategory("Infrastructure")}
-          />
-
-          <input
-            className="btn"
-            type="radio"
-            name="category"
-            aria-label="Environment"
-            onChange={() => setSelectedCategory("Environment")}
-          />
-
-          <input
-            className="btn"
-            type="radio"
-            name="category"
-            aria-label="Technology"
-            onChange={() => setSelectedCategory("Technology")}
-          />
-
-          <input
-            className="btn"
-            type="radio"
-            name="category"
-            aria-label="Others"
-            onChange={() => setSelectedCategory("Others")}
-          />
         </form>
+      </section>
+
+      {/* language change */}
+      <div className="flex justify-center my-4">
+        <select
+          // onChange={handleLanguageChange}
+          // value={selectedLanguage}
+          className="p-2 border rounded"
+        >
+          <option value="">Select Language</option>
+          <option value="hi">Hindi</option>
+          <option value="en">English</option>
+          <option value="bn">Bengali</option>
+          <option value="te">Telugu</option>
+          <option value="mr">Marathi</option>
+          <option value="ta">Tamil</option>
+          <option value="gu">Gujarati</option>
+          <option value="ur">Urdu</option>
+          <option value="kn">Kannada</option>
+          <option value="or">Odia</option>
+          <option value="pa">Punjabi</option>
+          <option value="ml">Malayalam</option>
+          <option value="as">Assamese</option>
+          <option value="mai">Maithili</option>
+        </select>
       </div>
 
-      <div className="space-y-6 mt-6">
+      {/* Problems List */}
+      <main className="space-y-6 mt-6">
         {filteredProblems.length > 0 ? (
-          filteredProblems.map((problem) => {
-            const isExpanded = expandedProblemId === problem._id;
-
-            return (
-              <div
-                key={problem._id}
-                className={`bg-white shadow-md rounded-lg border border-gray-200 
-                transition-all duration-500 ease-in-out overflow-hidden ${
-                  isExpanded ? "max-h-[2000px]" : "max-h-[300px]"
-                }`}
-              >
-                <div className="p-6">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center mb-4">
-                      <div className="bg-primary rounded-full w-14 h-14 flex items-center justify-center text-5xl font-bold">
-                        {problem?.submittedBy?.name.charAt(0)}
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-800">
-                          {problem.submittedBy.name}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          Posted:{" "}
-                          {new Date(problem.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="category">
-                      <div className="tooltip" data-tip="Category">
-                        <button className="btn btn-lg btn-dash">
-                          {problem.category}
-                        </button>
-                      </div>
-                    </div>
+          filteredProblems.map((problem) => (
+            <article
+              key={problem._id}
+              className="bg-white shadow-md rounded-2xl border border-gray-200 overflow-hidden"
+            >
+              {/* Problem Header */}
+              <div className="p-6 flex justify-between items-center mt-2">
+                <div className="flex items-center">
+                  <div className="bg-primary rounded-full w-14 h-14 flex items-center justify-center text-5xl font-bold">
+                    {problem?.submittedBy?.name.charAt(0)}
                   </div>
-
-                  <p className="text-gray-600 mt-2">
-                    <strong>Title:</strong> {problem.title}
-                  </p>
-                  <p className="text-gray-600 mt-2">
-                    <strong>Description:</strong> {problem.description}
-                  </p>
-                  <p className="text-gray-500 mt-2">
-                    <strong>Address:</strong> {problem.address}
-                  </p>
+                  <div className="ml-3">
+                    <h3 className="text-lg font-medium text-gray-800">
+                      {problem.submittedBy.name}
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      Posted: {new Date(problem.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
                 </div>
-
-                {!isExpanded && (
-                  <div className="w-full bg-gradient-to-t from-white to-transparent text-center p-4">
-                    <button
-                      onClick={() => toggleProblem(problem._id)}
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-all duration-300"
-                    >
-                      Show More
+                <div className="category">
+                  <div className="tooltip" data-tip="Category">
+                    <button className="btn btn-lg btn-dash">
+                      {problem.category}
                     </button>
                   </div>
-                )}
-
-                {/* Expanded Content with animations */}
-                <div
-                  className={`transition-opacity duration-500 ${
-                    isExpanded ? "opacity-100 delay-150" : "opacity-0 h-0"
-                  }`}
-                >
-                  {isExpanded && (
-                    <>
-                      {problem.images.length > 0 && (
-                        <div className="flex space-x-4 mt-4">
-                          {problem.images.map((photo, index) => (
-                            <img
-                              key={index}
-                              src={photo}
-                              alt={`Problem ${problem._id} photo ${index + 1}`}
-                              className="w-60 h-60 rounded-lg shadow-md"
-                            />
-                          ))}
-                        </div>
-                      )}
-
-                      {problem.videos?.length > 0 && (
-                        <div className="mt-4">
-                          <h4 className="text-lg font-medium text-gray-700">
-                            Videos:
-                          </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                            {problem.videos.map((video, index) => (
-                              <div
-                                key={index}
-                                className="overflow-hidden rounded-lg shadow-md"
-                              >
-                                <video
-                                  controls
-                                  src={video}
-                                  className="w-full h-96 object-cover rounded-lg"
-                                ></video>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {problem.documents?.length > 0 && (
-                        <div className="mt-4">
-                          <h4 className="text-lg font-medium text-gray-700">
-                            Documents:
-                          </h4>
-                          <div className="grid grid-cols-2 gap-4 w-full h-screen mt-2">
-                            {problem.documents.map((doc, index) => (
-                              <div
-                                key={index}
-                                className="w-full h-full border p-2 rounded-md shadow-md"
-                              >
-                                <h5 className="text-gray-600">
-                                  Document {index + 1}
-                                </h5>
-                                <iframe
-                                  src={doc}
-                                  className="w-full h-full border rounded-md"
-                                  title={`Document ${index + 1}`}
-                                ></iframe>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="flex items-center space-x-4 my-8">
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                          Upvote ({problem.votes})
-                        </button>
-                        <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
-                          Contribute
-                        </button>
-                      </div>
-
-                      {problem.contributors?.length > 0 && (
-                        <div className="mt-4">
-                          <h4 className="text-lg font-medium text-gray-700">
-                            Contributors:
-                          </h4>
-                          <ul className="list-disc list-inside text-gray-600 mt-2">
-                            {problem.contributors.map((contributor, index) => (
-                              <li key={index}>{contributor}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      {/* Show Less Button */}
-                      <div className="text-center m-4">
-                        <button
-                          onClick={() => setExpandedProblemId(null)}
-                          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-all duration-300"
-                        >
-                          Show Less
-                        </button>
-                      </div>
-                    </>
-                  )}
                 </div>
               </div>
-            );
-          })
+
+              {/* Problem Details */}
+              <div className="p-6">
+                <p className="text-gray-600">
+                  <strong>Title:</strong> {problem.title}
+                </p>
+                <p className="text-gray-600">
+                  <strong>Description:</strong> {problem.description}
+                </p>
+                <p className="text-gray-500">
+                  <strong>Address:</strong> {problem.address}
+                </p>
+              </div>
+
+              {/* Expandable Section */}
+              {expandedProblemId === problem._id ? (
+                <div className="p-6">
+                  {problem.images.length > 0 && (
+                    <div className="flex space-x-4 mt-4">
+                      {problem.images.map((photo, index) => (
+                        <img
+                          key={index}
+                          src={photo}
+                          alt={`Problem ${problem._id} photo ${index + 1}`}
+                          className="w-60 h-60 rounded-lg shadow-md"
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {problem.videos.length > 0 && (
+                    <div className="mt-4">
+                      <h4 className="text-lg font-medium text-gray-700">
+                        Videos:
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                        {problem.videos.map((video, index) => (
+                          <video
+                            key={index}
+                            controls
+                            src={video}
+                            className="w-full h-96 object-cover rounded-lg"
+                          ></video>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex items-center space-x-4 my-8">
+                    <button
+                      onClick={() => handleUpvote(problem._id)}
+                      className={`px-4 py-2 rounded transition ${
+                        problem.upvotedUsers.includes(verifiedProblems._id)
+                          ? "bg-red-500 text-white" // If user already upvoted, show as active
+                          : "bg-blue-500 text-white hover:bg-blue-600"
+                      }`}
+                    >
+                      {problem.upvotedUsers.includes(verifiedProblems._id)
+                        ? "Upvoted"
+                        : "Upvote"}{" "}
+                      ({problem.votes})
+                    </button>
+
+                    <button className="bg-green-500 text-white px-4 py-2 rounded">
+                      Contribute
+                    </button>
+                  </div>
+
+                  <div className="text-center m-4">
+                    <button
+                      onClick={() => setExpandedProblemId(null)}
+                      className="bg-red-500 text-white px-4 py-2 rounded"
+                    >
+                      Show Less
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="w-full bg-gradient-to-t from-white to-transparent text-center p-4">
+                  <button
+                    onClick={() => toggleProblem(problem._id)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                  >
+                    Show More
+                  </button>
+                </div>
+              )}
+            </article>
+          ))
         ) : (
-          // No Problems Found Message
           <div className="flex items-center justify-center">
             <div
               role="alert"
@@ -298,7 +262,7 @@ const ProblemPostsPage = () => {
             </div>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 };

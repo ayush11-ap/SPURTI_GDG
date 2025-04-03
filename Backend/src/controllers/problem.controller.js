@@ -115,3 +115,40 @@ module.exports.aiProblemAnalysis = async (req, res) => {
       .json({ error: "Error fetching problems: " + error.message });
   }
 };
+
+module.exports.toggleUpvote = async (req, res) => {
+  try {
+    const { problemId } = req.params;
+    const userId = req.user.id; // Ensure user is authenticated
+
+    const problem = await Problem.findById(problemId);
+    if (!problem) {
+      return res.status(404).json({ message: "Problem not found" });
+    }
+
+    // Check if the user has already upvoted
+    const hasUpvoted = problem.upvotedUsers.includes(userId);
+
+    if (hasUpvoted) {
+      // If user already upvoted, remove the vote
+      problem.votes -= 1;
+      problem.upvotedUsers = problem.upvotedUsers.filter(
+        (id) => id.toString() !== userId
+      );
+    } else {
+      // If user hasn't upvoted, add the vote
+      problem.votes += 1;
+      problem.upvotedUsers.push(userId);
+    }
+
+    await problem.save();
+
+    return res.status(200).json({
+      votes: problem.votes,
+      upvotedUsers: problem.upvotedUsers,
+    });
+  } catch (error) {
+    console.error("Error in upvote:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};

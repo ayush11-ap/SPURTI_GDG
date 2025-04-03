@@ -62,6 +62,7 @@ const ProblemSchema = new mongoose.Schema(
     },
     assignedExperts: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     votes: { type: Number, default: 0, min: 0 },
+    upvotedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     address: {
       type: String,
       required: true,
