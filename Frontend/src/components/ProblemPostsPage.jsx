@@ -4,7 +4,7 @@ import axios from "axios";
 
 const ProblemPostsPage = () => {
   const [verifiedProblems, setVerifiedProblems] = useState([]);
-  const [expandedProblemId, setExpandedProblemId] = useState(null);
+  // const [expandedProblemId, setExpandedProblemId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const navigate = useNavigate();
 
@@ -42,9 +42,9 @@ const ProblemPostsPage = () => {
     }
   };
 
-  const toggleProblem = (problemId) => {
-    setExpandedProblemId((prevId) => (prevId === problemId ? null : problemId));
-  };
+  // const toggleProblem = (problemId) => {
+  //   setExpandedProblemId((prevId) => (prevId === problemId ? null : problemId));
+  // };
 
   const filteredProblems = selectedCategory
     ? verifiedProblems.filter(
@@ -160,60 +160,60 @@ const ProblemPostsPage = () => {
                   </div>
 
                   {/* Expandable Section */}
-                  {expandedProblemId === problem._id ? (
-                    <div className="p-6">
-                      {problem.images.length > 0 && (
-                        <div className="relative w-full max-w-lg">
-                          {/* Carousel Container */}
-                          <div
-                            ref={carouselRef}
-                            className="flex w-[55vw] overflow-x-scroll scroll-smooth space-x-4 p-4 border-2 rounded-box scrollbar-hide"
-                          >
-                            {problem.images.map((photo, index) => (
-                              <div
-                                key={index}
-                                className="flex-shrink-0 w-60 h-40"
-                              >
-                                <img
-                                  src={photo}
-                                  alt={`Problem ${problem._id} photo ${index + 1}`}
-                                  className="rounded-lg border-2 border-black w-full h-full object-cover"
-                                />
-                              </div>
-                            ))}
-                            {problem.videos.map((video, index) => (
-                              <div
-                                key={problem.images.length + index}
-                                className="flex-shrink-0 w-60 h-40"
-                              >
-                                <video
-                                  controls
-                                  src={video}
-                                  className="rounded-lg border-2 border-black w-full h-full"
-                                ></video>
-                              </div>
-                            ))}
-                          </div>
-
-                          {/* Navigation Buttons */}
-                          <div className="absolute w-[55vw] left-0 right-0 top-1/2 flex justify-between -translate-y-1/2 px-4">
-                            <button
-                              onClick={scrollLeft}
-                              className="btn btn-circle opacity-80 bg-gray-800 text-white hover:bg-gray-600"
+                  {/* {expandedProblemId === problem._id ? ( */}
+                  <div className="p-6">
+                    {problem.images.length > 0 && (
+                      <div className="relative w-full max-w-lg">
+                        {/* Carousel Container */}
+                        <div
+                          ref={carouselRef}
+                          className="flex w-[55vw] overflow-x-scroll scroll-smooth space-x-4 p-4 border-2 rounded-box scrollbar-hide"
+                        >
+                          {problem.images.map((photo, index) => (
+                            <div
+                              key={index}
+                              className="flex-shrink-0 w-60 h-50"
                             >
-                              ❮
-                            </button>
-                            <button
-                              onClick={scrollRight}
-                              className="btn btn-circle bg-gray-800 text-white hover:bg-gray-600"
+                              <img
+                                src={photo}
+                                alt={`Problem ${problem._id} photo ${index + 1}`}
+                                className="rounded-lg border-2 border-black w-full h-full object-cover"
+                              />
+                            </div>
+                          ))}
+                          {problem.videos.map((video, index) => (
+                            <div
+                              key={problem.images.length + index}
+                              className="flex-shrink-0 w-60 h-50"
                             >
-                              ❯
-                            </button>
-                          </div>
+                              <video
+                                controls
+                                src={video}
+                                className="rounded-lg border-2 border-black w-full h-full"
+                              ></video>
+                            </div>
+                          ))}
                         </div>
-                      )}
 
-                      {/* {problem.videos.length > 0 && (
+                        {/* Navigation Buttons */}
+                        <div className="absolute w-[55vw] left-0 right-0 top-1/2 flex justify-between -translate-y-1/2 px-4">
+                          <button
+                            onClick={scrollLeft}
+                            className="btn btn-circle opacity-80 bg-gray-800 text-white hover:bg-gray-600"
+                          >
+                            ❮
+                          </button>
+                          <button
+                            onClick={scrollRight}
+                            className="btn btn-circle bg-gray-800 text-white hover:bg-gray-600"
+                          >
+                            ❯
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* {problem.videos.length > 0 && (
                         <div className="mt-4">
                           <h4 className="text-lg font-medium text-gray-700">
                             Videos:
@@ -231,66 +231,41 @@ const ProblemPostsPage = () => {
                         </div>
                       )} */}
 
-                      {problem.documents?.length > 0 && (
-                        <div className="mt-4">
-                          <h4 className="text-lg font-medium text-gray-700">
-                            Documents:
-                          </h4>
-                          <div className="flex items-center justify-evenly w-full mt-2">
-                            {problem.documents.map((doc, index) => (
-                              <a
-                                key={index}
-                                href={doc}
-                                target="_blank"
-                                download
-                                className="text-blue-600 hover:underline font-medium"
-                              >
-                                Document {index + 1}
-                              </a>
-                            ))}
-                          </div>
+                    {problem.documents?.length > 0 && (
+                      <div className="mt-4">
+                        <h4 className="text-lg font-medium text-gray-700">
+                          Documents:
+                        </h4>
+                        <div className="flex items-center justify-evenly w-full mt-2">
+                          {problem.documents.map((doc, index) => (
+                            <a
+                              key={index}
+                              href={doc}
+                              target="_blank"
+                              download
+                              className=" btn btn-dash cursor-pointer font-medium"
+                            >
+                              Document {index + 1}
+                            </a>
+                          ))}
                         </div>
-                      )}
-
-                      <div className="flex items-center space-x-4 my-8">
-                        <button
-                          onClick={() => handleUpvote(problem._id)}
-                          className={`px-4 py-2 rounded transition ${
-                            problem.upvotedUsers.includes(verifiedProblems._id)
-                              ? "bg-red-500 text-white" // If user already upvoted, show as active
-                              : "bg-blue-500 text-white hover:bg-blue-600"
-                          }`}
-                        >
-                          {problem.upvotedUsers.includes(verifiedProblems._id)
-                            ? "Upvoted"
-                            : "Upvote"}{" "}
-                          ({problem.votes})
-                        </button>
-
-                        <button className="bg-green-500 text-white px-4 py-2 rounded">
-                          Contribute
-                        </button>
                       </div>
+                    )}
 
-                      <div className="text-center m-4">
-                        <button
-                          onClick={() => setExpandedProblemId(null)}
-                          className="bg-red-500 text-white px-4 py-2 rounded"
-                        >
-                          Show Less
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="w-full bg-gradient-to-t from-white to-transparent text-center p-4">
+                    <div className="flex items-center space-x-4 my-8">
                       <button
-                        onClick={() => toggleProblem(problem._id)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        onClick={() => handleUpvote(problem._id)}
+                        className={`btn btn-outline`}
                       >
-                        Show More
+                        {problem.upvotedUsers.includes(verifiedProblems._id)
+                          ? "Upvoted"
+                          : "Upvote"}{" "}
+                        ({problem.votes})
                       </button>
+
+                      <button className="btn btn-outline"> Contribute</button>
                     </div>
-                  )}
+                  </div>
                 </article>
               ))
             ) : (

@@ -26,21 +26,21 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="navbar bg-base-100 shadow-sm">
+      <div className="navbar bg-base-100 shadow-sm px-4">
         <div className="flex-1 flex gap-1">
           <img
-            src="https://res.cloudinary.com/dfl3qkx31/image/upload/v1743072087/rpkukf52d2qhqkblfu8s.jpg"
+            src="https://res.cloudinary.com/dpxoco8xb/image/upload/v1743749459/Simple_Swan21_r4zzlz.png"
             alt="Smiling child"
-            className="w-5"
+            className="w-8"
           />
-          <h1 className="text-xl font-Crimson Pro">स्फूर्ती</h1>
+          <h1 className="text-2xl font-Crimson Pro">स्फूर्ती</h1>
         </div>
         <div className="flex gap-2">
-          <div className="flex items-center justify-center gap-4 mr-2 cursor-pointer text-xl">
+          <div className="flex items-center justify-center gap-4 mr-2 cursor-pointer text-lg">
             <h1 onClick={() => navigate("/")}>Home</h1>
             {/* <a href="#stories">Stories</a> */}
             <h1 onClick={() => navigate("/submit-problem")}>
-              Submit Challenge
+              Submit A Challenge
             </h1>
             {user?.role === "Spurti Volunteer" && (
               <h1 onClick={() => navigate("/verify-problem")}>Verify</h1>

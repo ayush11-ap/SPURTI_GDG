@@ -41,7 +41,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-800 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-base py-12 px-4 sm:px-6 lg:px-8">
       <fieldset className="fieldset w-md bg-base-200 border border-base-300 p-4 rounded-box">
         <fieldset className="fieldset w-md bg-base-200 border-base-300 border-2 p-4 rounded-box">
           <legend className="fieldset-legend text-lg">Login to Spurti</legend>
@@ -70,7 +70,7 @@ const Login = () => {
           <p className="my-2 text-center text-lg text-gray-600 font-semibold">
             Don't Have Account :{" "}
             <span
-              className="cursor-pointer hover:text-gray-100"
+              className="cursor-pointer text-black hover:text-neutral"
               onClick={() => {
                 navigate("/signup");
               }}

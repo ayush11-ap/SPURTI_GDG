@@ -3,11 +3,13 @@ const PlatformInfo = () => (
   <div className="hero py-12">
     <div className="hero-content flex-col lg:flex-row gap-30">
       <img
-        src="https://res.cloudinary.com/dfl3qkx31/image/upload/v1743072093/uwz0v7cnbok1mvy4ubkv.jpg"
-        className="max-w-sm rounded-lg shadow-2xl"
+        src="https://res.cloudinary.com/dpxoco8xb/image/upload/v1743746972/intro_ird3gp.png"
+        // className="max-w-sm rounded-lg shadow-2xl"
       />
       <div>
-        <h1 className="text-5xl font-bold">Spurti : A Platform for Change</h1>
+        <h1 className="text-5xl font-bold text-center">
+          Spurti : A Platform for Change
+        </h1>
         <p className="py-6 text-center">
           A decentralized, community-driven online ecosystem where community
           leaders, local organizations, tribes, and verified representatives

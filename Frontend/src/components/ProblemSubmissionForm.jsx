@@ -194,7 +194,7 @@ const ProblemSubmissionForm = () => {
         <div className="mt-4">
           <button
             onClick={handleProblemSubmit}
-            className="btn btn-success w-full"
+            className="btn btn-neutral w-full"
           >
             Submit Problem
           </button>

@@ -2,7 +2,6 @@
 @plugin "daisyui" {
   themes:
     caramellatte --default,
-    luxury --prefersdark,
-    cupcake,
+    /* luxury --prefersdark, */ cupcake,
     dracula;
 }

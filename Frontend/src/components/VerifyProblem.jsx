@@ -54,7 +54,10 @@ const VerifyProblem = () => {
   return (
     <div className="bg-base-200 min-h-screen p-6">
       <h1 className="text-3xl font-bold text-center mb-6">Verify Problems</h1>
-      <button onClick={fetchProblems} className="btn btn-dash btn-primary mb-4">
+      <button
+        onClick={fetchProblems}
+        className="btn btn-outline btn-neutral mb-4"
+      >
         Fetch Problems
       </button>
 
