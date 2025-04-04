@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -52,10 +52,24 @@ const ProblemPostsPage = () => {
       )
     : verifiedProblems;
 
+  const carouselRef = useRef(null);
+
+  const scrollLeft = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="bg-gray-100 min-h-screen p-6">
+    <div className="bg-gray-100 min-h-screen ">
       {/* Header */}
-      <header className="sticky top-16 bg-gray-100 z-10 p-3 flex justify-between shadow-md">
+      <header className="sticky border-[1px] rounded-lg top-16 bg-gray-100 z-10 p-3 flex justify-between shadow-md">
         <h1 className="text-3xl font-bold">Challenges</h1>
         <button
           className="bg-black text-white px-4 py-2 rounded"
@@ -65,204 +79,251 @@ const ProblemPostsPage = () => {
         </button>
       </header>
 
-      {/* Category Filter */}
-      <section className="flex items-center justify-center my-6">
-        <form className="filter flex space-x-2">
-          {[
-            "Education",
-            "Healthcare",
-            "Infrastructure",
-            "Environment",
-            "Technology",
-            "Others",
-          ].map((category) => (
-            <input
-              key={category}
-              className="btn"
-              type="radio"
-              name="category"
-              aria-label={category}
-              onChange={() => setSelectedCategory(category)}
-            />
-          ))}
-          <input
-            className="btn btn-square"
-            type="reset"
-            value="×"
-            onClick={() => setSelectedCategory("")}
-          />
-        </form>
-      </section>
+      <div className="flex gap-4">
+        <div className="left-panel w-[60%] p-2">
+          {/* Category Filter */}
+          <section className="flex items-center justify-center my-6">
+            <form className="filter flex space-x-2">
+              {[
+                "Education",
+                "Healthcare",
+                "Infrastructure",
+                "Environment",
+                "Technology",
+                "Others",
+              ].map((category) => (
+                <input
+                  key={category}
+                  className="btn"
+                  type="radio"
+                  name="category"
+                  aria-label={category}
+                  onChange={() => setSelectedCategory(category)}
+                />
+              ))}
+              <input
+                className="btn btn-square"
+                type="reset"
+                value="×"
+                onClick={() => setSelectedCategory("")}
+              />
+            </form>
+          </section>
 
-      {/* language change */}
-      <div className="flex justify-center my-4">
-        <select
-          // onChange={handleLanguageChange}
-          // value={selectedLanguage}
-          className="p-2 border rounded"
-        >
-          <option value="">Select Language</option>
-          <option value="hi">Hindi</option>
-          <option value="en">English</option>
-          <option value="bn">Bengali</option>
-          <option value="te">Telugu</option>
-          <option value="mr">Marathi</option>
-          <option value="ta">Tamil</option>
-          <option value="gu">Gujarati</option>
-          <option value="ur">Urdu</option>
-          <option value="kn">Kannada</option>
-          <option value="or">Odia</option>
-          <option value="pa">Punjabi</option>
-          <option value="ml">Malayalam</option>
-          <option value="as">Assamese</option>
-          <option value="mai">Maithili</option>
-        </select>
-      </div>
-
-      {/* Problems List */}
-      <main className="space-y-6 mt-6">
-        {filteredProblems.length > 0 ? (
-          filteredProblems.map((problem) => (
-            <article
-              key={problem._id}
-              className="bg-white shadow-md rounded-2xl border border-gray-200 overflow-hidden"
-            >
-              {/* Problem Header */}
-              <div className="p-6 flex justify-between items-center mt-2">
-                <div className="flex items-center">
-                  <div className="bg-primary rounded-full w-14 h-14 flex items-center justify-center text-5xl font-bold">
-                    {problem?.submittedBy?.name.charAt(0)}
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-lg font-medium text-gray-800">
-                      {problem.submittedBy.name}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      Posted: {new Date(problem.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-                <div className="category">
-                  <div className="tooltip" data-tip="Category">
-                    <button className="btn btn-lg btn-dash">
-                      {problem.category}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Problem Details */}
-              <div className="p-6">
-                <p className="text-gray-600">
-                  <strong>Title:</strong> {problem.title}
-                </p>
-                <p className="text-gray-600">
-                  <strong>Description:</strong> {problem.description}
-                </p>
-                <p className="text-gray-500">
-                  <strong>Address:</strong> {problem.address}
-                </p>
-              </div>
-
-              {/* Expandable Section */}
-              {expandedProblemId === problem._id ? (
-                <div className="p-6">
-                  {problem.images.length > 0 && (
-                    <div className="flex space-x-4 mt-4">
-                      {problem.images.map((photo, index) => (
-                        <img
-                          key={index}
-                          src={photo}
-                          alt={`Problem ${problem._id} photo ${index + 1}`}
-                          className="w-60 h-60 rounded-lg shadow-md"
-                        />
-                      ))}
-                    </div>
-                  )}
-
-                  {problem.videos.length > 0 && (
-                    <div className="mt-4">
-                      <h4 className="text-lg font-medium text-gray-700">
-                        Videos:
-                      </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                        {problem.videos.map((video, index) => (
-                          <video
-                            key={index}
-                            controls
-                            src={video}
-                            className="w-full h-96 object-cover rounded-lg"
-                          ></video>
-                        ))}
+          {/* Problems List */}
+          <main className="space-y-6 mt-6">
+            {filteredProblems.length > 0 ? (
+              filteredProblems.map((problem) => (
+                <article
+                  key={problem._id}
+                  className="bg-white shadow-md rounded-2xl border border-gray-200 overflow-hidden"
+                >
+                  {/* Problem Header */}
+                  <div className="px-4 flex justify-between items-center mt-2">
+                    <div className="flex items-center">
+                      <div className="bg-primary rounded-full w-14 h-14 flex items-center justify-center text-5xl font-bold">
+                        {problem?.submittedBy?.name.charAt(0)}
+                      </div>
+                      <div className="ml-3">
+                        <h3 className="text-lg font-medium text-gray-800">
+                          {problem.submittedBy.name}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          Posted:{" "}
+                          {new Date(problem.createdAt).toLocaleDateString()}
+                        </p>
                       </div>
                     </div>
+                    <div className="category">
+                      <div
+                        className="tooltip tooltip-bottom"
+                        data-tip="Category"
+                      >
+                        <button className="btn btn-lg btn-dash">
+                          {problem.category}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Problem Details */}
+                  <div className="p-6">
+                    <p className="text-gray-600">
+                      <strong>Title:</strong> {problem.title}
+                    </p>
+                    <p className="text-gray-600">
+                      <strong>Description:</strong> {problem.description}
+                    </p>
+                    <p className="text-gray-500">
+                      <strong>Address:</strong> {problem.address}
+                    </p>
+                  </div>
+
+                  {/* Expandable Section */}
+                  {expandedProblemId === problem._id ? (
+                    <div className="p-6">
+                      {problem.images.length > 0 && (
+                        <div className="relative w-full max-w-lg">
+                          {/* Carousel Container */}
+                          <div
+                            ref={carouselRef}
+                            className="flex w-[55vw] overflow-x-scroll scroll-smooth space-x-4 p-4 border-2 rounded-box scrollbar-hide"
+                          >
+                            {problem.images.map((photo, index) => (
+                              <div
+                                key={index}
+                                className="flex-shrink-0 w-60 h-40"
+                              >
+                                <img
+                                  src={photo}
+                                  alt={`Problem ${problem._id} photo ${index + 1}`}
+                                  className="rounded-lg border-2 border-black w-full h-full object-cover"
+                                />
+                              </div>
+                            ))}
+                            {problem.videos.map((video, index) => (
+                              <div
+                                key={problem.images.length + index}
+                                className="flex-shrink-0 w-60 h-40"
+                              >
+                                <video
+                                  controls
+                                  src={video}
+                                  className="rounded-lg border-2 border-black w-full h-full"
+                                ></video>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Navigation Buttons */}
+                          <div className="absolute w-[55vw] left-0 right-0 top-1/2 flex justify-between -translate-y-1/2 px-4">
+                            <button
+                              onClick={scrollLeft}
+                              className="btn btn-circle opacity-80 bg-gray-800 text-white hover:bg-gray-600"
+                            >
+                              ❮
+                            </button>
+                            <button
+                              onClick={scrollRight}
+                              className="btn btn-circle bg-gray-800 text-white hover:bg-gray-600"
+                            >
+                              ❯
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* {problem.videos.length > 0 && (
+                        <div className="mt-4">
+                          <h4 className="text-lg font-medium text-gray-700">
+                            Videos:
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                            {problem.videos.map((video, index) => (
+                              <video
+                                key={index}
+                                controls
+                                src={video}
+                                className="w-full h-96 object-cover rounded-lg"
+                              ></video>
+                            ))}
+                          </div>
+                        </div>
+                      )} */}
+
+                      {problem.documents?.length > 0 && (
+                        <div className="mt-4">
+                          <h4 className="text-lg font-medium text-gray-700">
+                            Documents:
+                          </h4>
+                          <div className="flex items-center justify-evenly w-full mt-2">
+                            {problem.documents.map((doc, index) => (
+                              <a
+                                key={index}
+                                href={doc}
+                                target="_blank"
+                                download
+                                className="text-blue-600 hover:underline font-medium"
+                              >
+                                Document {index + 1}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex items-center space-x-4 my-8">
+                        <button
+                          onClick={() => handleUpvote(problem._id)}
+                          className={`px-4 py-2 rounded transition ${
+                            problem.upvotedUsers.includes(verifiedProblems._id)
+                              ? "bg-red-500 text-white" // If user already upvoted, show as active
+                              : "bg-blue-500 text-white hover:bg-blue-600"
+                          }`}
+                        >
+                          {problem.upvotedUsers.includes(verifiedProblems._id)
+                            ? "Upvoted"
+                            : "Upvote"}{" "}
+                          ({problem.votes})
+                        </button>
+
+                        <button className="bg-green-500 text-white px-4 py-2 rounded">
+                          Contribute
+                        </button>
+                      </div>
+
+                      <div className="text-center m-4">
+                        <button
+                          onClick={() => setExpandedProblemId(null)}
+                          className="bg-red-500 text-white px-4 py-2 rounded"
+                        >
+                          Show Less
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="w-full bg-gradient-to-t from-white to-transparent text-center p-4">
+                      <button
+                        onClick={() => toggleProblem(problem._id)}
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                      >
+                        Show More
+                      </button>
+                    </div>
                   )}
-
-                  <div className="flex items-center space-x-4 my-8">
-                    <button
-                      onClick={() => handleUpvote(problem._id)}
-                      className={`px-4 py-2 rounded transition ${
-                        problem.upvotedUsers.includes(verifiedProblems._id)
-                          ? "bg-red-500 text-white" // If user already upvoted, show as active
-                          : "bg-blue-500 text-white hover:bg-blue-600"
-                      }`}
-                    >
-                      {problem.upvotedUsers.includes(verifiedProblems._id)
-                        ? "Upvoted"
-                        : "Upvote"}{" "}
-                      ({problem.votes})
-                    </button>
-
-                    <button className="bg-green-500 text-white px-4 py-2 rounded">
-                      Contribute
-                    </button>
-                  </div>
-
-                  <div className="text-center m-4">
-                    <button
-                      onClick={() => setExpandedProblemId(null)}
-                      className="bg-red-500 text-white px-4 py-2 rounded"
-                    >
-                      Show Less
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="w-full bg-gradient-to-t from-white to-transparent text-center p-4">
-                  <button
-                    onClick={() => toggleProblem(problem._id)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                </article>
+              ))
+            ) : (
+              <div className="flex items-center justify-center">
+                <div
+                  role="alert"
+                  className="alert alert-info text-center w-[80%] mt-6"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="h-6 w-6 shrink-0 stroke-current"
                   >
-                    Show More
-                  </button>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  <span>Problem Not Available</span>
                 </div>
-              )}
-            </article>
-          ))
-        ) : (
-          <div className="flex items-center justify-center">
-            <div
-              role="alert"
-              className="alert alert-info text-center w-[80%] mt-6"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="h-6 w-6 shrink-0 stroke-current"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-              <span>Problem Not Available</span>
-            </div>
+              </div>
+            )}
+          </main>
+        </div>
+        <div className="right-panel w-[40%] p-2">
+          <div className="w-full h-[39%] bg-white border-2 rounded-2xl sticky top-40 z-30">
+            <h1 className="text-center text-gray-600 text-2xl">AI Analysis</h1>
           </div>
-        )}
-      </main>
+        </div>
+      </div>
     </div>
   );
 };
