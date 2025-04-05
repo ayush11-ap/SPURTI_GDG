@@ -72,14 +72,14 @@ const ProblemPostsPage = () => {
       <header className="sticky border-[1px] rounded-lg top-16 bg-gray-100 z-10 p-3 flex justify-between shadow-md">
         <h1 className="text-3xl font-bold">Challenges</h1>
         <button
-          className="bg-black text-white px-4 py-2 rounded"
+          className="bg-neutral text-white px-4 py-2 rounded"
           onClick={() => navigate("/submit-problem")}
         >
           Submit a Challenge
         </button>
       </header>
 
-      <div className="flex gap-4">
+      <div className="flex items-center justify-center gap-4">
         <div className="left-panel w-[60%] p-2">
           {/* Category Filter */}
           <section className="flex items-center justify-center my-6">
@@ -121,7 +121,7 @@ const ProblemPostsPage = () => {
                   {/* Problem Header */}
                   <div className="px-4 flex justify-between items-center mt-2">
                     <div className="flex items-center">
-                      <div className="bg-primary rounded-full w-14 h-14 flex items-center justify-center text-5xl font-bold">
+                      <div className="bg-base-200 border-2 border-base-300 rounded-full text-neutral w-14 h-14 flex items-center justify-center text-5xl font-bold">
                         {problem?.submittedBy?.name.charAt(0)}
                       </div>
                       <div className="ml-3">
@@ -196,40 +196,24 @@ const ProblemPostsPage = () => {
                         </div>
 
                         {/* Navigation Buttons */}
-                        <div className="absolute w-[55vw] left-0 right-0 top-1/2 flex justify-between -translate-y-1/2 px-4">
-                          <button
-                            onClick={scrollLeft}
-                            className="btn btn-circle opacity-80 bg-gray-800 text-white hover:bg-gray-600"
-                          >
-                            ❮
-                          </button>
-                          <button
-                            onClick={scrollRight}
-                            className="btn btn-circle bg-gray-800 text-white hover:bg-gray-600"
-                          >
-                            ❯
-                          </button>
-                        </div>
+                        {problem.images.length + problem.videos.length >= 4 && (
+                          <div className="absolute w-[55vw] left-0 right-0 top-1/2 flex justify-between -translate-y-1/2 px-4">
+                            <button
+                              onClick={scrollLeft}
+                              className="btn btn-circle opacity-80 bg-gray-800 text-white hover:bg-gray-600"
+                            >
+                              ❮
+                            </button>
+                            <button
+                              onClick={scrollRight}
+                              className="btn btn-circle bg-gray-800 text-white hover:bg-gray-600"
+                            >
+                              ❯
+                            </button>
+                          </div>
+                        )}
                       </div>
                     )}
-
-                    {/* {problem.videos.length > 0 && (
-                        <div className="mt-4">
-                          <h4 className="text-lg font-medium text-gray-700">
-                            Videos:
-                          </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                            {problem.videos.map((video, index) => (
-                              <video
-                                key={index}
-                                controls
-                                src={video}
-                                className="w-full h-96 object-cover rounded-lg"
-                              ></video>
-                            ))}
-                          </div>
-                        </div>
-                      )} */}
 
                     {problem.documents?.length > 0 && (
                       <div className="mt-4">
@@ -272,7 +256,7 @@ const ProblemPostsPage = () => {
               <div className="flex items-center justify-center">
                 <div
                   role="alert"
-                  className="alert alert-info text-center w-[80%] mt-6"
+                  className="alert alert-error text-center w-[80%] mt-6"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -292,11 +276,6 @@ const ProblemPostsPage = () => {
               </div>
             )}
           </main>
-        </div>
-        <div className="right-panel w-[40%] p-2">
-          <div className="w-full h-[39%] bg-white border-2 rounded-2xl sticky top-40 z-30">
-            <h1 className="text-center text-gray-600 text-2xl">AI Analysis</h1>
-          </div>
         </div>
       </div>
     </div>
