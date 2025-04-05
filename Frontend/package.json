@@ -13,6 +13,8 @@
     "check-format": "prettier --check ."
   },
   "dependencies": {
+    "@google/genai": "^0.7.0",
+    "@gsap/react": "^2.1.2",
     "@reduxjs/toolkit": "^2.6.1",
     "@tailwindcss/vite": "^4.0.15",
     "axios": "^1.8.4",
