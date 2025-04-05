@@ -5,13 +5,11 @@ import PlatformInfo from "../Pages/PlatformInfo";
 import SubmitChallenge from "../Pages/SubmitChallenge";
 import BecomeContributor from "../Pages/BecomeContributor";
 import Footer from "../Pages/Footer";
-import VerifyProblem from "./VerifyProblem";
 import Stories from "../Pages/Stories";
 const Home = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Check if the state contains scrollToStories
     if (location.state?.scrollToStories) {
       const element = document.getElementById("StoriesOfImpact");
       if (element) {
@@ -21,7 +19,7 @@ const Home = () => {
   }, [location]);
 
   return (
-    <div className="bg-red-50 text-black">
+    <div className="bg-base-100 text-black">
       <HeroSection />
       <PlatformInfo />
       <div id="StoriesOfImpact">

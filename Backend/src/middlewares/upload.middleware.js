@@ -1,6 +1,5 @@
 const multer = require("multer");
 
-// Multer storage configuration (storing in memory before uploading)
 const storage = multer.memoryStorage();
 
 const upload = multer({

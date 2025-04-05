@@ -67,13 +67,6 @@ const ProblemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    city: { type: String, default: "" }, // Extracted city
-    urgencyLevel: {
-      type: String,
-      enum: ["Low", "Medium", "High"],
-      default: "Low",
-    },
-    geminiReport: { type: String, default: "" },
   },
   { timestamps: true }
 );

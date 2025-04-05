@@ -20,8 +20,7 @@ const AIProblemSolution = ({ setShowAiSolution, problem }) => {
         const prompt = `I have a problem titled "${problem?.title}" in the category "${problem?.category}". The problem is described as: "${problem?.description}". The location of the problem is: "${problem?.address}". Can you suggest practical solutions for this problem, utilizing nearby resources and involving people located in or around the "${problem?.address}" area? Additionally, please provide details of relevant individuals, local organizations, or government authorities in Dehugaon, Pune, or nearby regions—such as contact numbers, names, or offices—that I can reach out to for assistance in addressing this issue. provide the solution in brief with proper contact details of the people or organizations who can help me in solving this problem.`;
         const aiResponse = await ai.models.generateContent({
           model: "gemini-2.0-flash",
-          // model: "gemini-2.5-pro-exp-03-25",
-          contents: prompt, // Use dynamic prompt
+          contents: prompt,
           config: {
             responseMimeType: "application/json",
             responseSchema: {
@@ -64,7 +63,7 @@ const AIProblemSolution = ({ setShowAiSolution, problem }) => {
     };
 
     fetchAIResponse();
-  }, [problem]); // Add props as dependencies
+  }, [problem]);
 
   return (
     <div className="border-2 h-[80vh] border-base-300 p-4 rounded-lg overflow-auto">

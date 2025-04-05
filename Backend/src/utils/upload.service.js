@@ -9,7 +9,7 @@ const uploadFileToGCS = (file) => {
       return;
     }
 
-    const blob = bucket.file(Date.now() + path.extname(file.originalname)); // Unique filename
+    const blob = bucket.file(Date.now() + path.extname(file.originalname));
     const blobStream = blob.createWriteStream({
       resumable: false,
       metadata: { contentType: file.mimetype },

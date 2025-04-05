@@ -9,7 +9,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  // const { user, setUser } = useContext(UserDataContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -46,7 +45,7 @@ const Login = () => {
         <fieldset className="fieldset w-md bg-base-200 border-base-300 border-2 p-4 rounded-box">
           <legend className="fieldset-legend text-lg">Login to Spurti</legend>
 
-          <label className="fieldset-label">Email</label>
+          <label className="fieldset-legend">Email</label>
           <input
             type="email"
             value={email}
@@ -55,7 +54,7 @@ const Login = () => {
             placeholder="Email"
           />
 
-          <label className="fieldset-label mt-2">Password : {password}</label>
+          <label className="fieldset-legend mt-2">Password : {password}</label>
           <input
             type="password"
             value={password}

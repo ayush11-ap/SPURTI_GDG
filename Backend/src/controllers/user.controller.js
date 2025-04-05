@@ -3,6 +3,7 @@ const { validateSignUpData } = require("../utils/user.validate");
 const validator = require("validator");
 const User = require("../models/users.model");
 
+// User Registration
 module.exports.registerUser = async (req, res) => {
   try {
     validateSignUpData(req);
@@ -40,6 +41,7 @@ module.exports.registerUser = async (req, res) => {
   }
 };
 
+// User Login
 module.exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -71,6 +73,7 @@ module.exports.loginUser = async (req, res) => {
   }
 };
 
+// User Profile
 module.exports.getUserProfile = async (req, res) => {
   try {
     const user = req.user;
@@ -83,6 +86,7 @@ module.exports.getUserProfile = async (req, res) => {
   }
 };
 
+// User Profile Logout
 module.exports.logoutUser = async (req, res) => {
   res
     .cookie("token", null, {

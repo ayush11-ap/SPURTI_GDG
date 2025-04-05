@@ -1,6 +1,7 @@
 const problemModel = require("../models/problem.model");
 const User = require("../models/users.model");
 
+// Get all problems for a specific user
 module.exports.getAllProblems = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -20,6 +21,7 @@ module.exports.getAllProblems = async (req, res) => {
   }
 };
 
+// Verify and update the status of a problem
 module.exports.updateProblemStatus = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);

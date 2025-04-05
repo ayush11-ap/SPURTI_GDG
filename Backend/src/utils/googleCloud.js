@@ -4,7 +4,7 @@ const path = require("path");
 // Initialize Google Cloud Storage
 const storage = new Storage({
   keyFilename: path.join(__dirname, "../config/spurti.json"), // Path to your service account JSON
-  projectId: "spurti", // Replace with your project ID
+  projectId: "spurti",
 });
 
 const bucketName = "image_video_document_storage"; // Replace with your bucket name

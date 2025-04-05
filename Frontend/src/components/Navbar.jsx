@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="navbar bg-base-100 shadow-sm px-4">
+      <div className="navbar bg-base-200 shadow-sm px-4">
         <div className="flex-1 flex gap-1">
           <img
             src="https://res.cloudinary.com/dpxoco8xb/image/upload/v1743749459/Simple_Swan21_r4zzlz.png"

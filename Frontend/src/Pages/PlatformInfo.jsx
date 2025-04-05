@@ -2,10 +2,7 @@ import React from "react";
 const PlatformInfo = () => (
   <div className="hero py-12">
     <div className="hero-content flex-col lg:flex-row gap-30">
-      <img
-        src="https://res.cloudinary.com/dpxoco8xb/image/upload/v1743746972/intro_ird3gp.png"
-        // className="max-w-sm rounded-lg shadow-2xl"
-      />
+      <img src="https://res.cloudinary.com/dpxoco8xb/image/upload/v1743746972/intro_ird3gp.png" />
       <div>
         <h1 className="text-5xl font-bold text-center">
           Spurti : A Platform for Change

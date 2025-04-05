@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ContributeDetails from "../Pages/ContributeDetails";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
 
 const ProblemPostsPage = () => {
   const [verifiedProblems, setVerifiedProblems] = useState([]);
-  // const [expandedProblemId, setExpandedProblemId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const navigate = useNavigate();
+  const [showDetails, setShowDetails] = useState(false);
+  const [selectedProblem, setSelectedProblem] = useState(null);
+  const contributeRef = useRef(null);
 
   useEffect(() => {
     const fetchProblems = async () => {
@@ -31,7 +36,6 @@ const ProblemPostsPage = () => {
         { withCredentials: true }
       );
 
-      // Update the UI with the new votes
       setVerifiedProblems((prevProblems) =>
         prevProblems.map((p) =>
           p._id === problemId ? { ...p, votes: response.data.votes } : p
@@ -41,10 +45,6 @@ const ProblemPostsPage = () => {
       console.error("Error upvoting:", error);
     }
   };
-
-  // const toggleProblem = (problemId) => {
-  //   setExpandedProblemId((prevId) => (prevId === problemId ? null : problemId));
-  // };
 
   const filteredProblems = selectedCategory
     ? verifiedProblems.filter(
@@ -65,6 +65,50 @@ const ProblemPostsPage = () => {
       carouselRef.current.scrollBy({ left: 300, behavior: "smooth" });
     }
   };
+
+  const handleContributeClick = (problem) => {
+    setSelectedProblem(problem);
+    setShowDetails(true);
+
+    gsap.to(contributeRef.current, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.5,
+      ease: "power2.out",
+      display: "flex",
+    });
+  };
+
+  const handleCloseContributeDetails = () => {
+    gsap.to(contributeRef.current, {
+      opacity: 0,
+      scale: 0.8,
+      duration: 0.5,
+      ease: "power2.in",
+      onComplete: () => {
+        setShowDetails(false);
+      },
+    });
+  };
+
+  useGSAP(
+    function () {
+      if (showDetails) {
+        gsap.to(contributeRef.current, {
+          width: "100%",
+          height: "100%",
+          duration: 0.5,
+        });
+      } else {
+        gsap.to(contributeRef.current, {
+          width: "0%",
+          height: "0%",
+          duration: 0.5,
+        });
+      }
+    },
+    [showDetails]
+  );
 
   return (
     <div className="bg-gray-100 min-h-screen ">
@@ -159,12 +203,9 @@ const ProblemPostsPage = () => {
                     </p>
                   </div>
 
-                  {/* Expandable Section */}
-                  {/* {expandedProblemId === problem._id ? ( */}
                   <div className="p-6">
                     {problem.images.length > 0 && (
                       <div className="relative w-full max-w-lg">
-                        {/* Carousel Container */}
                         <div
                           ref={carouselRef}
                           className="flex w-[55vw] overflow-x-scroll scroll-smooth space-x-4 p-4 border-2 rounded-box scrollbar-hide"
@@ -247,7 +288,13 @@ const ProblemPostsPage = () => {
                         ({problem.votes})
                       </button>
 
-                      <button className="btn btn-outline"> Contribute</button>
+                      <button
+                        onClick={() => handleContributeClick(problem)}
+                        className="btn btn-outline"
+                      >
+                        {" "}
+                        Contribute
+                      </button>
                     </div>
                   </div>
                 </article>
@@ -277,6 +324,16 @@ const ProblemPostsPage = () => {
             )}
           </main>
         </div>
+      </div>
+
+      <div
+        ref={contributeRef}
+        className="fixed inset-0 bg-black/50 items-center justify-center opacity-0 scale-0 hidden"
+      >
+        <ContributeDetails
+          problem={selectedProblem}
+          setShowDetails={handleCloseContributeDetails}
+        />
       </div>
     </div>
   );

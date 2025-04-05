@@ -4,7 +4,7 @@ import { IoMdMail } from "react-icons/io";
 import { FaGithub } from "react-icons/fa";
 
 export const Footer = () => (
-  <footer className="footer footer-horizontal footer-center bg-base-100 px-2 py-5">
+  <footer className="footer footer-horizontal footer-center bg-base-200 px-2 py-5">
     <div>
       <div className="flex items-center gap-2">
         <img

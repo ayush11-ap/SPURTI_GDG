@@ -73,7 +73,7 @@ const SignUp = () => {
         <fieldset className="fieldset w-md bg-base-200 border-2 border-base-300 p-4 rounded-box">
           <legend className="fieldset-legend text-lg">SignUp to Spurti</legend>
 
-          <label className="fieldset-label">Name</label>
+          <label className="fieldset-legend">Name</label>
           <input
             type="text"
             value={name}
@@ -82,7 +82,7 @@ const SignUp = () => {
             placeholder="Enter Name"
           />
 
-          <label className="fieldset-label">Mobile No.</label>
+          <label className="fieldset-legend">Mobile No.</label>
           <input
             type="text"
             value={mobileNo}
@@ -91,7 +91,7 @@ const SignUp = () => {
             placeholder="Enter Mobile No."
           />
 
-          <label className="fieldset-label">Email</label>
+          <label className="fieldset-legend">Email</label>
           <input
             type="email"
             value={email}
@@ -132,7 +132,7 @@ const SignUp = () => {
             setPreferredArea
           )}
 
-          <label className="fieldset-label mt-2">Password : {password}</label>
+          <label className="fieldset-legend mt-2">Password : {password}</label>
           <input
             type="password"
             value={password}

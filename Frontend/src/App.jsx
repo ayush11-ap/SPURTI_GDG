@@ -16,7 +16,6 @@ const App = () => {
     <>
       <Provider store={appStore}>
         <BrowserRouter>
-          {/* Navbar is globally visible */}
           <div className="sticky top-0 z-50">
             <Navbar />
           </div>

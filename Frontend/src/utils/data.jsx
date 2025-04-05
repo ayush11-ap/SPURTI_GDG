@@ -11,19 +11,22 @@ export const renderRoleSpecificFields = (
   switch (role) {
     case "NGO":
       return (
-        <div className="space-y-4">
+        <div className="space-y-2">
+          <label className="fieldset-legend">Organization Name</label>
           <input
             type="text"
             onChange={(e) => setOrganizationName(e.target.value)}
             className="input w-full"
             placeholder="Organization Name"
           />
+          <label className="fieldset-legend">Registration Number</label>
           <input
             type="text"
             onChange={(e) => setRegistrationNumber(e.target.value)}
             className="input w-full"
             placeholder="Registration Number"
           />
+          <label className="fieldset-legend">Focus Area</label>
           <select
             onChange={(e) => setFocusArea(e.target.value)}
             className="select w-full"
@@ -41,6 +44,7 @@ export const renderRoleSpecificFields = (
     case "Expert":
       return (
         <div className="space-y-4">
+          <label className="fieldset-legend">Area of Expertise</label>
           <input
             type="text"
             onChange={(e) => setExpertise(e.target.value)}
@@ -52,6 +56,7 @@ export const renderRoleSpecificFields = (
     case "Donor":
       return (
         <div className="space-y-4">
+          <label className="fieldset-legend">Donation Preference</label>
           <select
             onChange={(e) => setDonationPreference(e.target.value)}
             className="select w-full"
@@ -69,12 +74,14 @@ export const renderRoleSpecificFields = (
     case "Spurti Volunteer":
       return (
         <div className="space-y-4">
+          <label className="fieldset-legend">Skills</label>
           <input
             type="text"
             onChange={(e) => setSkills(e.target.value)}
             className="input w-full"
             placeholder="Skills"
           />
+          <label className="fieldset-legend">Preferred Area</label>
           <select
             onChange={(e) => setPreferredArea(e.target.value)}
             className="select w-full"

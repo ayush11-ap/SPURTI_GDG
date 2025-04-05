@@ -7,20 +7,16 @@ import AIProblemSolution from "./AIProblemSolution";
 import { gsap } from "gsap";
 
 const ProblemSubmissionForm = () => {
-  const [title, setTitle] = useState("Overcrowding During Religious Events");
-  const [description, setDescription] = useState(
-    "As a pilgrimage site due to the Sant Tukaram Gatha Mandir, Dehugaon sees a massive influx of visitors during festivals and events. This strains local infrastructure—roads, sanitation, and accommodation—leading to overcrowding, traffic jams, and temporary disruptions in daily life for residents."
-  );
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [address, setAddress] = useState(
-    "Sant Tukaram Vaikunth Mandir, Dehugaon, Pune, Maharashtra 412109"
-  );
+  const [address, setAddress] = useState("");
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [errors, setErrors] = useState({});
   const aiSolutionRef = useRef(null);
-  const [showAiSolution, setShowAiSolution] = useState(false); // New state
+  const [showAiSolution, setShowAiSolution] = useState(false);
   const [submittedProblem, setSubmittedProblem] = useState(null);
 
   const dispatch = useDispatch();
@@ -76,14 +72,12 @@ const ProblemSubmissionForm = () => {
           withCredentials: true,
         }
       );
-      // setSubmittedProblem(response.data);
-      // console.log("Problem submitted2:", response.data.problem);
+
       setSubmittedProblem(response.data.problem);
       if (response.status === 201) {
-        // alert("Problem submitted successfully!");
         const data = response.data.data;
         dispatch(addProblems(data));
-        // Reset form fields
+
         setTitle("");
         setDescription("");
         setCategory("");
@@ -92,7 +86,7 @@ const ProblemSubmissionForm = () => {
         setVideos([]);
         setDocuments([]);
         setErrors({});
-        setShowAiSolution(true); // Show AI solution after successful submission
+        setShowAiSolution(true);
       }
     } catch (error) {
       console.error("Submission error:", error);
@@ -107,16 +101,16 @@ const ProblemSubmissionForm = () => {
       if (showAiSolution) {
         gsap.to(aiSolutionRef.current, {
           transform: "translateY(0)",
-          duration: 0.5, // Duration for showing
+          duration: 0.5,
         });
       } else {
         gsap.to(aiSolutionRef.current, {
           transform: "translateY(100%)",
-          duration: 0.5, // Duration for hiding
+          duration: 0.5,
         });
       }
     },
-    [showAiSolution] // Updated dependency
+    [showAiSolution]
   );
 
   return (

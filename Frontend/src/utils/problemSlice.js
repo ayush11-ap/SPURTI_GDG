@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const problemSlice = createSlice({
   name: "problem",
-  initialState: [], // storing problems
+  initialState: [],
   reducers: {
     addProblems: (state, action) => {
       return action.payload;
