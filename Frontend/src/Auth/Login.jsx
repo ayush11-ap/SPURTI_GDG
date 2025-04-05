@@ -54,7 +54,7 @@ const Login = () => {
             placeholder="Email"
           />
 
-          <label className="fieldset-legend mt-2">Password : {password}</label>
+          <label className="fieldset-legend mt-2">Password</label>
           <input
             type="password"
             value={password}
