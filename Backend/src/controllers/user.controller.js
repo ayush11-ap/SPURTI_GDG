@@ -28,8 +28,12 @@ module.exports.registerUser = async (req, res) => {
     const token = await user.generateJWT();
 
     res.cookie("token", token, {
-      expires: new Date(Date.now() + 8 * 3600000), // Expires in 8 hours
+      secure: true,             
+      httpOnly: true,           
+      sameSite: "None",         
+      expires: new Date(Date.now() + 8 * 3600000), // 8 hours
     });
+    
 
     res.json({
       message: "User Created Successfully",
@@ -58,7 +62,10 @@ module.exports.loginUser = async (req, res) => {
       const token = await user.generateJWT();
 
       res.cookie("token", token, {
-        expires: new Date(Date.now() + 8 * 3600000), // Expires in 8 hours
+        secure: true,             
+        httpOnly: true,           
+        sameSite: "None",         
+        expires: new Date(Date.now() + 8 * 3600000), // 8 hours
       });
       res.json({
         message: "User Logged In Successfully!",
