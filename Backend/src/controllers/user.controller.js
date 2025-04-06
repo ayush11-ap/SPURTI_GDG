@@ -11,7 +11,6 @@ module.exports.registerUser = async (req, res) => {
     const { name, email, password, mobileNo, role, address, roleDetails } =
       req.body;
     const hashedPassword = await bcrypt.hash(password, 12);
-    console.log(hashedPassword);
 
     const user = new User({
       name,
@@ -28,12 +27,11 @@ module.exports.registerUser = async (req, res) => {
     const token = await user.generateJWT();
 
     res.cookie("token", token, {
-      secure: true,             
-      httpOnly: true,           
-      sameSite: "None",         
+      secure: true,
+      httpOnly: true,
+      sameSite: "None",
       expires: new Date(Date.now() + 8 * 3600000), // 8 hours
     });
-    
 
     res.json({
       message: "User Created Successfully",
@@ -62,9 +60,9 @@ module.exports.loginUser = async (req, res) => {
       const token = await user.generateJWT();
 
       res.cookie("token", token, {
-        secure: true,             
-        httpOnly: true,           
-        sameSite: "None",         
+        secure: true,
+        httpOnly: true,
+        sameSite: "None",
         expires: new Date(Date.now() + 8 * 3600000), // 8 hours
       });
       res.json({

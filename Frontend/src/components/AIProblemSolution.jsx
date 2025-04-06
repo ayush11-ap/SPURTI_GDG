@@ -12,8 +12,6 @@ const AIProblemSolution = ({ setShowAiSolution, problem }) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
-  console.log(problem);
-
   useEffect(() => {
     const fetchAIResponse = async () => {
       try {
@@ -49,10 +47,7 @@ const AIProblemSolution = ({ setShowAiSolution, problem }) => {
             },
           },
         });
-        console.log(
-          "AI Response:",
-          aiResponse.candidates[0].content.parts[0].text
-        );
+
         setResponse(aiResponse.candidates[0].content.parts[0].text);
       } catch (error) {
         console.error("Error fetching AI response:", error);

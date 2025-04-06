@@ -11,7 +11,8 @@ const verifyRouter = require("./routes/verify.routes");
 
 app.use(
   cors({
-    origin: "https://spurti-gdg.vercel.app",
+    origin: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
     credentials: true,
   })
 );

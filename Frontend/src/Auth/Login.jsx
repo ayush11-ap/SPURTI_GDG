@@ -25,8 +25,6 @@ const Login = () => {
       );
 
       if (response.status === 200) {
-        console.log(response.data);
-
         const data = response.data.data;
         localStorage.setItem("token", data.token);
         dispatch(addUser(data));

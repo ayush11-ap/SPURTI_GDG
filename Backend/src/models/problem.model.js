@@ -8,7 +8,7 @@ const ProblemSchema = new mongoose.Schema(
       required: true,
       validate: {
         validator: function (v) {
-          return v.split(" ").length <= 20; // Ensure title has at most 20 words
+          return v.split(" ").length <= 50;
         },
         message: "Title must not exceed 20 words.",
       },
@@ -16,8 +16,8 @@ const ProblemSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
-      minlength: 20, // Minimum length for description
-      maxlength: 2000, // Maximum length for description
+      minlength: 20,
+      maxlength: 2000,
     },
     category: {
       type: String,
@@ -32,7 +32,7 @@ const ProblemSchema = new mongoose.Schema(
       required: true,
     },
     images: {
-      type: [String], // Cloud storage URLs
+      type: [String],
     },
     videos: {
       type: [String],

@@ -5,8 +5,6 @@ const { uploadFileToGCS } = require("../utils/upload.service");
 module.exports.registerProblem = async (req, res) => {
   try {
     const { title, description, category, votes, address } = req.body;
-    const city = extractCity(address);
-    const urgencyLevel = calculateUrgency(votes);
 
     let images = [];
     let videos = [];
@@ -40,8 +38,6 @@ module.exports.registerProblem = async (req, res) => {
       submittedBy: req.user._id,
       votes,
       address,
-      city,
-      urgencyLevel,
     });
 
     // Save the problem to the database

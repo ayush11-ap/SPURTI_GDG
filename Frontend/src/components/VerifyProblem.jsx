@@ -17,7 +17,6 @@ const VerifyProblem = () => {
         }
       );
       const fetchedProblems = response.data.problems;
-      console.log(fetchedProblems);
 
       dispatch(addProblems(fetchedProblems));
       setProblems(fetchedProblems);
@@ -33,7 +32,6 @@ const VerifyProblem = () => {
         { problemId: id, status },
         { withCredentials: true }
       );
-      console.log(response.data.message);
 
       setProblems((prevProblems) =>
         prevProblems.map((problem) =>
